@@ -1,0 +1,10 @@
+package ${service.packageName};
+
+/**
+ * ${context.bizChName}Service
+ *
+ * @Date ${tool.currentTime()}
+ */
+public interface I${context.bizEnBigName}Service {
+
+}

@@ -1,0 +1,11 @@
+package ${dao.packageName};
+
+/**
+ * ${context.bizChName}Dao
+ *
+ * @Date ${tool.currentTime()}
+ */
+public interface ${context.bizEnBigName}Dao {
+
+
+}

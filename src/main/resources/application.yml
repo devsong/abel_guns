@@ -1,0 +1,95 @@
+##########################################################
+##################  所有profile共有的配置  #################
+##########################################################
+
+###################  guns配置  ###################
+guns:
+  swagger-open: false #是否开启swagger (true/false)
+  kaptcha-open: false #是否开启登录时验证码 (true/false)
+  session-open: false #是否开启session超时验证（受影响的类SessionTimeoutInterceptor） (true/false)
+  file-upload-path: /var/tmp/guns  #文件上传目录(不配置的话为java.io.tmpdir目录)
+  file-prefix: /guns/
+  muti-datasource-open: true #是否开启多数据源(true/false)
+  spring-session-open: false #是否开启spring session,如果是多机环境需要开启(true/false)
+  session-invalidate-time: 1800 #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900 #多久检测一次失效的session(只在单机环境下生效) 单位：秒
+
+###################  项目启动端口  ###################
+server:
+  port: 8070
+
+
+###################  MyBatis 配置  ###################
+mybatis:
+    type-aliases-package: com.stylefeng.guns.common.persistence.model
+    mapper-locations: classpath:com/stylefeng/guns/**/*.xml
+
+
+###################  MyBatis 分页插件配置  ###################
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
+
+###################  beetl配置  ###################
+beetl:
+  delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
+  delimiter-statement-end: null
+  resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
+  resource-tagsuffix: tag
+  resource-auto-check: true #是否检测文件变化,开发用true合适，但线上要改为false
+
+
+###################  spring配置  ###################
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+  profiles:
+    active: dev
+  mvc:
+    static-path-pattern: /**
+    view:
+      prefix: /WEB-INF/view
+  http:
+    converters:
+      preferred-json-mapper: fastjson
+    multipart:
+      max-request-size: 100MB #最大请求大小
+      max-file-size: 100MB #最大文件大小
+  devtools:
+    restart:
+      enabled: true #是否开启开发者工具（true/false）
+      additional-paths: src/main/java
+      exclude: static/**,WEB-INF/view/**,assets/**
+
+---
+
+##########################################################
+###################  开发环境的profile  ###################
+##########################################################
+spring:
+  profiles: dev
+  datasource:
+      name: guns
+      driver-classname: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/abel_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      username: admin
+      password: 1RNbTI@m$zIE114s
+      filters: wall,mergeStat
+
+#多数据源
+logs:
+  datasource:
+    name: logs
+    driver-classname: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/abel_guns_log?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+    username: admin
+    password: 1RNbTI@m$zIE114s
+
+logging:
+  path: logs/
+  file: guns.log
